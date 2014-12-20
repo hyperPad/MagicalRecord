@@ -57,7 +57,10 @@
         {
             dispatch_async(dispatch_get_main_queue(), ^{
                 completion(NO, nil);
+                [self MR_removeFromParentContext];
             });
+        } else {
+            [self MR_removeFromParentContext];
         }
 
         return;
@@ -118,7 +121,10 @@
                 {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         completion(saveResult, error);
+                        [self MR_removeFromParentContext];
                     });
+                } else {
+                    [self MR_removeFromParentContext];
                 }
             }
         }

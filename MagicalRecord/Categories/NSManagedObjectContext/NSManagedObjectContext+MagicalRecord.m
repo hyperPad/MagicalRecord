@@ -32,6 +32,9 @@ static id MagicalRecordUbiquitySetupNotificationObserver;
         [self MR_setDefaultContext:defaultContext];
 
         [defaultContext setParentContext:rootContext];
+        
+        // Adding new child context to parent context
+        [rootContext MR_addChildContext:defaultContext];
     }
 }
 
@@ -61,6 +64,10 @@ static id MagicalRecordUbiquitySetupNotificationObserver;
 {
     NSManagedObjectContext *context = [self MR_newPrivateQueueContext];
     [context setParentContext:parentContext];
+    
+    // Adding new child context to parent context
+    [parentContext MR_addChildContext:context];
+    
     [context MR_obtainPermanentIDsBeforeSaving];
     return context;
 }
@@ -91,6 +98,24 @@ static id MagicalRecordUbiquitySetupNotificationObserver;
     NSManagedObjectContext *context = [[self alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     MRLogInfo(@"Created new private queue context: %@", context);
     return context;
+}
+
+- (void) MR_addChildContext:(NSManagedObjectContext *)child {
+    NSMutableArray *children = self.userInfo[@"children"];
+    if (!children) {
+        children = [NSMutableArray array];
+        self.userInfo[@"children"] = children;
+    }
+    [children addObject:child];
+}
+
+- (void) MR_removeFromParentContext {
+    NSManagedObjectContext *parentContext = self.parentContext;
+    NSMutableArray *children = parentContext.userInfo[@"children"];
+    if (!children) {
+        return;
+    }
+    [children removeObject:self];
 }
 
 #pragma mark - Debugging

@@ -76,6 +76,17 @@
  */
 + (NSManagedObjectContext *) MR_newPrivateQueueContext NS_RETURNS_RETAINED;
 
+/**
+ Adding child context to parent context
+ */
+- (void) MR_addChildContext:(NSManagedObjectContext *)child;
+
+/**
+ Removing child context from parent context
+ */
+- (void) MR_removeFromParentContext;
+
+
 #pragma mark - Debugging
 
 /**
