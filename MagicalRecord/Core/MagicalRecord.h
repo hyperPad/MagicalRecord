@@ -1,4 +1,4 @@
-//
+// Testing
 //  MagicalRecord.h
 //
 //  Created by Saul Mora on 3/11/10.
