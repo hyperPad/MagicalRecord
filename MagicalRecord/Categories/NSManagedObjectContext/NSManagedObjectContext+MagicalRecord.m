@@ -303,8 +303,8 @@ static id MagicalRecordUbiquitySetupNotificationObserver;
 
     MagicalRecordRootSavingContext = context;
     
-    [context performBlock:^{
-        [context MR_obtainPermanentIDsBeforeSaving];
+    [MagicalRecordRootSavingContext performBlock:^{
+        [MagicalRecordRootSavingContext MR_obtainPermanentIDsBeforeSaving];
         [MagicalRecordRootSavingContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
         [MagicalRecordRootSavingContext MR_setWorkingName:@"MagicalRecord Root Saving Context"];
     }];

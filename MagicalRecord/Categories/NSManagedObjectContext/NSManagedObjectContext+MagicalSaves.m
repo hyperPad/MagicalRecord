@@ -104,7 +104,7 @@
                 }
                 else
                 {
-                    modifiedOptions &= MRSaveSynchronously;
+                    modifiedOptions &= ~MRSaveSynchronously;
                 }
 
                 // If we're saving parent contexts, do so

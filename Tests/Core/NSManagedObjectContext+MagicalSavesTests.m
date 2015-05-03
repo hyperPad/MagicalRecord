@@ -101,11 +101,8 @@
             expect(error).to.beNil();
 
             [childContext performBlock:^{
-                NSManagedObject *childContextFetchedObject = [childContext objectRegisteredForID:insertedObjectID];
-
                 // The child context should not have changes after the save
-                expect(childContextFetchedObject).toNot.beNil();
-                expect([childContextFetchedObject hasChanges]).to.beFalsy();
+                expect([childContext hasChanges]).to.beFalsy();
 
                 [childContextSaveExpectation fulfill];
             }];
@@ -131,10 +128,6 @@
 - (void)testSaveToSelfOnlyWhenSaveIsAsynchronousCallsMainThreadOnCompletion
 {
     NSManagedObjectContext *defaultContext = [NSManagedObjectContext MR_defaultContext];
-
-    __block BOOL completionBlockCalled = NO;
-    __block BOOL completionBlockIsOnMainThread = NO;
-
     NSManagedObject *inserted = [SingleEntityWithNoRelationships MR_createEntityInContext:defaultContext];
 
     expect([inserted hasChanges]).to.beTruthy();
@@ -225,7 +218,6 @@
         expect(insertedObjectID).toNot.beNil();
         expect([insertedObjectID isTemporaryID]).to.beFalsy();
 
-
         [childContext MR_saveToPersistentStoreWithCompletion:^(BOOL contextDidSave, NSError *error) {
             expect(contextDidSave).to.beTruthy();
             expect(error).to.beNil();
@@ -242,11 +234,8 @@
             }];
 
             [childContext performBlockAndWait:^{
-                NSManagedObject *childContextFetchedObject = [childContext objectRegisteredForID:insertedObjectID];
-
                 // The child context should not have changes after the save
-                expect(childContextFetchedObject).toNot.beNil();
-                expect([childContextFetchedObject hasChanges]).to.beFalsy();
+                expect([childContext hasChanges]).to.beFalsy();
             }];
 
             [childContextSavedExpectation fulfill];
